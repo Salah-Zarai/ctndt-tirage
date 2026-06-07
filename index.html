@@ -794,6 +794,10 @@ Version 4.0
 </footer>
 <script>
 
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycby4YhUMfu9Ddg3Hd6iboIVCKG1sMF0JGJq0-wQFBI-5cPjI3wKVASWVla-bQdD0zikX/exec";
+
 /* ==========================
 VARIABLE GLOBALE PDF
 ========================== */
@@ -880,13 +884,20 @@ return;
 
 }
 
-google.script.run
 
-.withSuccessHandler(
-showResults
+fetch(
+API_URL +
+"?action=numerique&nombre=" + n
 )
+.then(response => response.json())
+.then(showResults)
+.catch(error => {
 
-.lancerTirageNumerique(n);
+console.error(error);
+
+alert("Erreur API");
+
+});
 
 }
 else{
@@ -906,15 +917,25 @@ return;
 
 }
 
-google.script.run
-
-.withSuccessHandler(
-showResults
-)
-
-.lancerTirageNoms(
-sujets
+const listeEncodee =
+encodeURIComponent(
+sujets.replace(/\n/g,"|")
 );
+
+fetch(
+API_URL +
+"?action=noms&sujets=" +
+listeEncodee
+)
+.then(response => response.json())
+.then(showResults)
+.catch(error => {
+
+console.error(error);
+
+alert("Erreur API");
+
+});
 
 }
 
